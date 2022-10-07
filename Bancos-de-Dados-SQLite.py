@@ -1,3 +1,9 @@
+# Nome: Andrei Pochmann Koenich
+# Nome: Gustavo Spellmeier Neves
+
+# O programa a seguir representa um banco de dados relacionado ao funcionamento de uma Universidade, permitindo ao
+# usuário a realização de algumas consultas e modificações, conforme informado no menu.
+
 import os
 import sqlite3
 import keyboard
