@@ -1,5 +1,7 @@
-# Nome: Andrei Pochmann Koenich
-# Nome: Gustavo Spellmeier Neves
+# Andrei Pochmann Koenich
+# Gustavo Spellmeier Neves
+
+# Fundamentos de Bancos de Dados - Semestre 2022/01 - Turma A
 
 # O programa a seguir representa um banco de dados relacionado ao funcionamento de uma Universidade, permitindo ao
 # usuário a realização de algumas consultas e modificações, conforme informado no menu.
@@ -8,7 +10,7 @@ import os
 import sqlite3
 import keyboard
 
-def prepara_banco(cursor):
+def prepara_banco(cursor): # Remove as tabelas já existentes no banco de dados, com nomes iguais aos das novas tabelas.
     cursor.execute("DROP TABLE IF EXISTS Membro_UFRGS")
     cursor.execute("DROP TABLE IF EXISTS Atividade_extra")
     cursor.execute("DROP TABLE IF EXISTS Comgrad")
@@ -25,9 +27,9 @@ def prepara_banco(cursor):
     cursor.execute("DROP TABLE IF EXISTS Tecnico_adm")
     cursor.execute("DROP TABLE IF EXISTS Turma")
 
-    return cursor
+    return cursor # Retorna o cursor para o banco de dados atualizado, após as modificações.
 
-def insere_tuplas(cursor):
+def insere_tuplas(cursor): # Realiza todas as inserções de tuplas nas tabelas criadas.
 
     cursor.execute("INSERT INTO Membro_UFRGS VALUES('00308680','Andrei Pochmann Koenich','28372134905','8139867469','1999-03-12','Brasileiro','213547892312','andrei.koenich@gmail.com','555134735287','Rua Ernesto Weick,23 - Centro - Esteio','Solteiro')")
     cursor.execute("INSERT INTO Membro_UFRGS VALUES('00301624','Gustavo Spellmeier Neves','53245878912','5234598721','2001-05-18','Brasileiro','123576891231','gustavo.neves@gmail.com','5551993934592','Rua 24 de Outubro,815 - Moinhos de Vento,Porto Alegre','Separado')")
@@ -178,9 +180,9 @@ def insere_tuplas(cursor):
     cursor.execute("INSERT INTO Ministracao VALUES ('04939534','96483349','2022-1')")
     cursor.execute("INSERT INTO Ministracao VALUES ('26683079','65774833','2022-1')")
 
-    return cursor
+    return cursor # Retorna o cursor para o banco de dados atualizado, após as modificações.
 
-def instancia_tabelas(cursor):
+def instancia_tabelas(cursor): # Realiza as criações de todas as tabelas da base de dados.
     cursor.execute("CREATE TABLE Membro_UFRGS (codigo_vaga CHAR(8) PRIMARY KEY NOT NULL,"
                    "nome VARCHAR(100) NOT NULL, "
                    "cpf CHAR(11) NOT NULL UNIQUE, "
@@ -229,9 +231,9 @@ def instancia_tabelas(cursor):
                    "telefone_tecn CHAR(12) NOT NULL UNIQUE, "
                    "codigo_curso CHAR(8) NOT NULL UNIQUE, "
                    "inicio_representacao CHAR(10) NOT NULL, "
-                   "codigo_discente VARCHAR(8) NOT NULL UNIQUE, "
+                   "codigo_Discente VARCHAR(8) NOT NULL UNIQUE, "
                    "FOREIGN KEY (codigo_curso) REFERENCES Curso(codigo_curso),"
-                   "FOREIGN KEY (codigo_discente) REFERENCES Discente(matricula))")
+                   "FOREIGN KEY (codigo_Discente) REFERENCES Discente(matricula))")
 
     cursor.execute("CREATE TABLE Docente (codigo_vaga CHAR(8) PRIMARY KEY NOT NULL,"
                    "titulacao VARCHAR(11) NOT NULL, "
@@ -267,8 +269,8 @@ def instancia_tabelas(cursor):
                    "FOREIGN KEY (codigo_comgrad) REFERENCES Comgrad(codigo_comgrad) ON DELETE SET NULL)")
 
     cursor.execute("CREATE TABLE Atividade_extra(codigo_atividade CHAR(8) PRIMARY KEY NOT NULL, "
-                   "codigo_docente CHAR(8), "
-                   "matricula_discente CHAR(8) NOT NULL, "
+                   "codigo_Docente CHAR(8), "
+                   "matricula_Discente CHAR(8) NOT NULL, "
                    "nome VARCHAR(100) NOT NULL, "
                    "creditos_complementares SMALLINT NOT NULL, "
                    "bolsa NUMERIC(7,2) NOT NULL, "
@@ -277,11 +279,11 @@ def instancia_tabelas(cursor):
                    "indicador_ativo BOOLEAN NOT NULL, "
                    "carga_horaria SMALLINT NOT NULL, "
                    "cnpj_empresa CHAR(18), "
-                   "FOREIGN KEY (matricula_discente) REFERENCES Discente(matricula) ON DELETE CASCADE, "
-                   "FOREIGN KEY (codigo_docente) REFERENCES Docente(codigo_vaga) ON DELETE SET NULL, "
+                   "FOREIGN KEY (matricula_Discente) REFERENCES Discente(matricula) ON DELETE CASCADE, "
+                   "FOREIGN KEY (codigo_Docente) REFERENCES Docente(codigo_vaga) ON DELETE SET NULL, "
                    "FOREIGN KEY (cnpj_empresa) REFERENCES Empresa(cnpj_empresa) ON DELETE SET NULL)")
 
-    cursor.execute("CREATE TABLE Matricula(matricula_discente CHAR(8) PRIMARY KEY NOT NULL, "
+    cursor.execute("CREATE TABLE Matricula(matricula_Discente CHAR(8) PRIMARY KEY NOT NULL, "
                    "codigo_curso CHAR(8) NOT NULL, "
                    "semestre_inicio CHAR(7) NOT NULL, "
                    "data_fim CHAR(10), "
@@ -289,7 +291,7 @@ def instancia_tabelas(cursor):
                    "vaga_ingresso VARCHAR(30) NOT NULL, "
                    "ordem SMALLINT, "
                    "etapa VARCHAR(2), "
-                   "FOREIGN KEY (matricula_discente) REFERENCES Discente(matricula) ON DELETE CASCADE, "
+                   "FOREIGN KEY (matricula_Discente) REFERENCES Discente(matricula) ON DELETE CASCADE, "
                    "FOREIGN KEY (codigo_curso) REFERENCES Curso(codigo_curso) ON DELETE CASCADE)")
 
     cursor.execute("CREATE TABLE Curriculo(codigo_curso CHAR(8) NOT NULL, "
@@ -310,98 +312,130 @@ def instancia_tabelas(cursor):
                    "PRIMARY KEY (codigo_turma, semestre),"
                    "FOREIGN KEY (codigo_disciplina) REFERENCES Disciplina(codigo_disciplina) ON DELETE CASCADE)")
 
-    cursor.execute("CREATE TABLE Composicao_turma(matricula_discente CHAR(8) NOT NULL,"
+    cursor.execute("CREATE TABLE Composicao_turma(matricula_Discente CHAR(8) NOT NULL,"
                    "codigo_turma CHAR(8) NOT NULL,"
                    "semestre CHAR(7) NOT NULL,"
                    "conceito VARCHAR(2),"
-                   "PRIMARY KEY (matricula_discente,codigo_turma,semestre),"
-                   "FOREIGN KEY (matricula_discente) REFERENCES Discente(matricula) ON DELETE CASCADE,"
+                   "PRIMARY KEY (matricula_Discente,codigo_turma,semestre),"
+                   "FOREIGN KEY (matricula_Discente) REFERENCES Discente(matricula) ON DELETE CASCADE,"
                    "FOREIGN KEY (codigo_turma,semestre) REFERENCES Turma(codigo_turma,semestre) ON DELETE CASCADE,"
                    "CHECK(conceito IN ('A','B','C','D','FF')))")
 
-    cursor.execute("CREATE TABLE Ministracao(codigo_docente CHAR(8) NOT NULL,"
+    cursor.execute("CREATE TABLE Ministracao(codigo_Docente CHAR(8) NOT NULL,"
                    "codigo_turma CHAR(8) NOT NULL,"
                    "semestre CHAR(7) NOT NULL,"
-                   "PRIMARY KEY (codigo_docente,codigo_turma),"
-                   "FOREIGN KEY (codigo_docente) REFERENCES Docente(codigo_vaga) ON DELETE CASCADE,"
+                   "PRIMARY KEY (codigo_Docente,codigo_turma),"
+                   "FOREIGN KEY (codigo_Docente) REFERENCES Docente(codigo_vaga) ON DELETE CASCADE,"
                    "FOREIGN KEY (codigo_turma,semestre) REFERENCES Turma(codigo_turma,semestre) ON DELETE SET NULL)")
 
-    cursor = insere_tuplas(cursor)
-    return cursor
+    cursor = insere_tuplas(cursor) # Realiza todas as inserções de tuplas nas tabelas criadas.
+    return cursor # Retorna o cursor para o banco de dados atualizado, após as modificações.
 
-def armazena_consultas(): # Consultas parametrizadas: consultas 2,4, 5 e 7
+# Realiza operações de consultas nas tabelas criadas, de acordo com a escolha do usuário,
+# permitindo também colocar o gatilho em funcionamento, além de alterar a data de fim
+# das atividades de ensino por parte de algum Docente.
+# Consultas parametrizadas: consultas 2,4, 5 e 7.
+def armazena_consultas():
 
-    consulta1 = ("""SELECT codigo_vaga, Membro_UFRGS.nome as nome_docente, count(codigo_turma) AS total_turmas
-                    FROM Membro_UFRGS JOIN Ministracao ON (Membro_UFRGS.codigo_vaga = Ministracao.codigo_docente) 
+    # CONSULTA 1: Para cada Docente que já ministrou uma disciplina de Cálculo, consultar o seu código da vaga, o seu nome
+    # e a quantidade de turmas de Cálculo que ele já ministrou em todos os semestres até o momento.
+    consulta1 = ("""SELECT codigo_vaga, Membro_UFRGS.nome as nome_Docente, count(codigo_turma) AS total_turmas
+                    FROM Membro_UFRGS JOIN Ministracao ON (Membro_UFRGS.codigo_vaga = Ministracao.codigo_Docente) 
                                       JOIN Turma using (codigo_turma, semestre) JOIN Disciplina using (codigo_disciplina)WHERE Disciplina.nome LIKE 'Cálculo%'
                     GROUP BY codigo_vaga
-                    ORDER BY nome_docente""")
+                    ORDER BY nome_Docente""")
 
-    consulta2 = ("""SELECT codigo_vaga, Membro_UFRGS.nome AS nome_docente, titulacao, Departamento.nome AS nome_departamento
+
+    # CONSULTA 2: Considerando as titulações de Docentes que possuem remuneração mensal média superior a um determinado valor,
+    # consultar o código da vaga, o nome completo e o departamento dos professores que possuem tais titulações.
+    consulta2 = ("""SELECT codigo_vaga, Membro_UFRGS.nome AS nome_Docente, titulacao, Departamento.nome AS nome_departamento
                     FROM Membro_UFRGS NATURAL JOIN Docente JOIN Departamento USING (codigo_dpto)
                     WHERE titulacao IN (SELECT titulacao
                                         FROM Docente
                                         GROUP BY titulacao
                                         HAVING AVG(remuneracao) > ?)
-                    ORDER BY titulacao, nome_docente""")
+                    ORDER BY titulacao, nome_Docente""")
 
-    consulta3 = ("""SELECT codigo_vaga, titulacao, Membro_UFRGS.nome AS nome_docente, data_inicio, Departamento.nome AS nome_departamento
+    # CONSULTA 3: Consultar o código da vaga, a titulação, o nome completo, o departamento correspondente
+    # e a data de início das atividades do(s) Docente(s) com a maior remuneração padrão mensal da Universidade.
+    consulta3 = ("""SELECT codigo_vaga, titulacao, Membro_UFRGS.nome AS nome_Docente, data_inicio, Departamento.nome AS nome_departamento
                     FROM Membro_UFRGS NATURAL JOIN Docente JOIN Departamento USING (codigo_dpto)
                     WHERE remuneracao = (SELECT MAX(remuneracao) FROM Docente)
-                    ORDER BY nome_docente""")
+                    ORDER BY nome_Docente""")
 
-    consulta4 = ("""SELECT DISTINCT matricula_discente, nome_discente, ano_conclusaoEM, semestre_inicio
-                    FROM InfoDiscentes JOIN Discente ON (matricula_discente = matricula)
-                    WHERE data_fim IS NULL AND matricula_discente NOT IN (SELECT matricula_discente
-                                                                  FROM InfoDiscentes JOIN Composicao_turma USING (matricula_discente)
+    # CONSULTA 4: Consultar o número de matrícula, o nome completo, o ano de conclusão do Ensino Médio
+    # e o semestre de ingresso dos Discentes ativos que nunca obtiveram um determinado conceito em alguma disciplina qualquer.
+    consulta4 = ("""SELECT DISTINCT matricula_Discente, nome_Discente, ano_conclusaoEM, semestre_inicio
+                    FROM InfoDiscentes JOIN Discente ON (matricula_Discente = matricula)
+                    WHERE data_fim IS NULL AND matricula_Discente NOT IN (SELECT matricula_Discente
+                                                                  FROM InfoDiscentes JOIN Composicao_turma USING (matricula_Discente)
                                                                   WHERE conceito = ?)
-                    ORDER BY nome_discente""")
+                    ORDER BY nome_Discente""")
 
-    consulta5 = ("""SELECT matricula_discente, nome_discente, nome_curso, ano_conclusaoEM, semestre_inicio
-                    FROM InfoDiscentes INFO JOIN Discente ON (matricula_discente = matricula)
-                    WHERE nome_discente <> 'Thiago Santos da Rosa' AND NOT EXISTS (SELECT matricula_discente 
+    # CONSULTA 5: Consultar o número de matrícula, o nome, o curso, o ano de conclusão do Ensino Médio e o semestre de ingresso dos
+    # Discentes que já foram inseridos em todas as turmas (e talvez em outras) que um determinado aluno já esteve inserido.
+    consulta5 = ("""SELECT matricula_Discente, nome_Discente, nome_curso, ano_conclusaoEM, semestre_inicio
+                    FROM InfoDiscentes INFO JOIN Discente ON (matricula_Discente = matricula)
+                    WHERE nome_Discente <> 'Thiago Santos da Rosa' AND NOT EXISTS (SELECT matricula_Discente 
                                                                             FROM InfoDiscentes NATURAL JOIN Composicao_turma
-                                                                            WHERE nome_discente = ? AND codigo_turma NOT IN
+                                                                            WHERE nome_Discente = ? AND codigo_turma NOT IN
                                                                                 (SELECT DISTINCT codigo_turma
                                                                                 FROM InfoDiscentes NATURAL JOIN Composicao_turma
-                                                                                WHERE matricula_discente = INFO.matricula_discente))
-                    ORDER BY nome_discente""")
+                                                                                WHERE matricula_Discente = INFO.matricula_Discente))
+                    ORDER BY nome_Discente""")
 
-    consulta6 = ("""SELECT matricula_discente, nome_discente, codigo_turma, semestre, Disciplina.nome AS nome_disciplina, conceito 
+
+    # CONSULTA 6: Para cada Discente, consultar o número de matrícula, o nome completo e todas as turmas (com o respectivo semestre)
+    #  em que já esteve lotado, junto com o nome da disciplina e o conceito obtido.
+    consulta6 = ("""SELECT matricula_Discente, nome_Discente, codigo_turma, semestre, Disciplina.nome AS nome_disciplina, conceito 
                     FROM InfoDiscentes NATURAL JOIN Composicao_turma JOIN Turma USING (codigo_turma,semestre) JOIN Disciplina USING (codigo_disciplina)
-                    ORDER BY nome_discente, semestre""")
+                    ORDER BY nome_Discente, semestre""")
 
-    consulta7 = ("""SELECT codigo_vaga, nome AS nome_discente, COUNT(conceito)
+    # CONSULTA 7: Para cada Docente, consultar o seu código da vaga, o nome completo e a quantidade de alunos que já receberam
+    # um determinado conceito na sua disciplina.
+    consulta7 = ("""SELECT codigo_vaga, nome AS nome_Discente, COUNT(conceito)
                     FROM Membro_ufrgs NATURAL JOIN Docente NATURAL JOIN Ministracao JOIN Composicao_turma USING (codigo_turma)
                     WHERE conceito = ?
-                    GROUP BY codigo_vaga, nome_discente
-                    ORDER BY nome_discente""")
+                    GROUP BY codigo_vaga, nome_Discente
+                    ORDER BY nome_Discente""")
 
-    consulta8 = ("""SELECT matricula_discente, nome_discente, SUM(creditos) AS creditos_obrigatorios
+    # CONSULTA 8: Para cada Discente, consultar o número de matrícula, o nome completo, e a quantidade de créditos obrigatórios
+    # já obtida no curso no qual está matriculado.
+    consulta8 = ("""SELECT matricula_Discente, nome_Discente, SUM(creditos) AS creditos_obrigatorios
                     FROM InfoDiscentes NATURAL JOIN Composicao_turma JOIN Turma USING (codigo_turma,semestre) JOIN Disciplina USING (codigo_disciplina)
                     WHERE data_fim IS NULL
-                    GROUP BY matricula_discente, nome_discente
-                    ORDER BY nome_discente
+                    GROUP BY matricula_Discente, nome_Discente
+                    ORDER BY nome_Discente
                     """)
+    # CONSULTA 9: Para cada Discente realizando uma atividade extra em alguma empresa, consultar o seu número de matrícula, o
+    # nome completo, o curso no qual está atualmente matriculado,as datas de início e fim da atividade e, por fim o CNPJ e o nome
+    # da empresa em questão.
+    consulta9 = ("""SELECT matricula_Discente, nome_Discente, Atividade_extra.data_inicio AS inicio, Atividade_extra.data_fim AS fim, cnpj_empresa, Empresa.nome AS nome_empresa
+                    FROM InfoDiscentes JOIN Atividade_extra USING (matricula_Discente) JOIN Empresa USING (cnpj_empresa)
+                    ORDER BY nome_Discente""")
 
-    consulta9 = ("""SELECT matricula_discente, nome_discente, Atividade_extra.data_inicio AS inicio, Atividade_extra.data_fim AS fim, cnpj_empresa, Empresa.nome AS nome_empresa
-                    FROM InfoDiscentes JOIN Atividade_extra USING (matricula_discente) JOIN Empresa USING (cnpj_empresa)
-                    ORDER BY nome_discente""")
-
+    # CONSULTA 10: Para todos os técnicos-administrativos que prestam algum serviço à uma Comissão de Graduação, consultar
+    # o número da sua vaga, o seu nome completo, o nome da Comissão de Graduação correspondente, o seu cargo, a data de início
+    # da prestação de serviços, e o valor da remuneração recebida unicamente pela prestação de serviços à sua Comissão.
     consulta10 = ("""SELECT codigo_vaga, Membro_UFRGS.nome AS nome_tecnico, Comgrad.nome AS nome_comgrad, cargo_comgrad, data_inicio_comgrad AS data_inicio, remuneracao_comgrad AS remuneracao
                     FROM Membro_UFRGS NATURAL JOIN Tecnico_adm JOIN Comgrad USING (codigo_comgrad)
                     ORDER BY nome_tecnico""")
 
-    consulta11 = ("""SELECT codigo_vaga, Membro_UFRGS.nome AS nome_docente, codigo_turma, semestre
-                    FROM Membro_UFRGS JOIN Ministracao ON (codigo_vaga = codigo_docente)
-                    ORDER BY nome_docente""")
+    # CONSULTA 11: Para cada Docente, consultar o seu código da vaga, o seu nome completo, e, de acordo com
+    # o que consta no sistema, os códigos de todas as turmas que já ministrou até o momento, junto com o respectivo semestre.
+    consulta11 = ("""SELECT codigo_vaga, Membro_UFRGS.nome AS nome_Docente, codigo_turma, semestre
+                    FROM Membro_UFRGS JOIN Ministracao ON (codigo_vaga = codigo_Docente)
+                    ORDER BY nome_Docente""")
 
-    consulta12 = ("""SELECT DISTINCT codigo_vaga, Membro_UFRGS.nome AS nome_docente, Comgrad.nome AS nome_Comgrad, Departamento.nome AS nome_departamento, data_fim
+    # CONSULTA 12: Para cada Docente, consultar o seu código da vaga, nome completo, a sua
+    # comissão de graduação e o seu departamento ao qual está vinculado, além da sua data de fim das atividades na Universidade.
+    # Todos os Docentes devem ser retornados (mesmo os que não possuem vínculo com uma comissão ou com um departamento).
+    consulta12 = ("""SELECT DISTINCT codigo_vaga, Membro_UFRGS.nome AS nome_Docente, Comgrad.nome AS nome_Comgrad, Departamento.nome AS nome_departamento, data_fim
                     FROM Membro_UFRGS NATURAL JOIN Docente LEFT JOIN Comgrad USING (codigo_comgrad) LEFT JOIN Departamento USING (codigo_dpto)
-                    ORDER BY nome_docente""")
+                    ORDER BY nome_Docente""")
 
     lista_consultas = []
-    lista_consultas.append(consulta1)
+    lista_consultas.append(consulta1) # Armazena todas as consultas definidas em uma lista.
     lista_consultas.append(consulta2)
     lista_consultas.append(consulta3)
     lista_consultas.append(consulta4)
@@ -413,77 +447,78 @@ def armazena_consultas(): # Consultas parametrizadas: consultas 2,4, 5 e 7
     lista_consultas.append(consulta10)
     lista_consultas.append(consulta11)
     lista_consultas.append(consulta12)
-    return lista_consultas
+    return lista_consultas # Retorna a lista contendo todas as consultas definidas.
 
-def imprime_opcoes():
+def imprime_opcoes(): # Mostra ao usuário todas as opções possíveis de serem realizadas no banco de dados.
 
-    print('--CONSULTAS NO BANCO DE DADOS--\n')
-    print('Escolha a consulta ser realizada:')
+    print('--OPERAÇÕES NO BANCO DE DADOS--\n')
+    print('Pressione a tecla para escolher a operação a ser realizada:')
 
-    print('\n1 - Para cada docente que já ministrou uma disciplina de Cálculo, consultar o seu código de vaga, o seu nome,\n'
+    print('\n1 - Para cada Docente que já ministrou uma disciplina de Cálculo, consultar o seu código da vaga, o seu nome,\n'
           'e a quantidade de turmas de Cálculo que ele já ministrou em todos os semestres até o momento.\n')
 
-    print('2 - Considerando as titulações de docentes que possuem remuneração mensal média superior a um determinado valor,\n'
-          'consultar saber o código de vaga, o nome completo e o departamento dos professores que possuem tais titulações.\n')
+    print('2 - Considerando as titulações de Docentes que possuem remuneração mensal média superior a um determinado valor,\n'
+          'consultar o código da vaga, o nome completo e o departamento dos professores que possuem tais titulações.\n')
 
-    print('3 - Consultar o código de vaga, a titulação, o nome completo, o departamento correspondente'
-          'e a data de início\ndas atividades do(s) docente(s) com a maior remuneração padrão mensal da Universidade.\n')
+    print('3 - Consultar o código da vaga, a titulação, o nome completo, o departamento correspondente'
+          'e a data de início\ndas atividades do(s) Docente(s) com a maior remuneração padrão mensal da Universidade.\n')
 
     print('4 - Consultar o número de matrícula, o nome completo, o ano de conclusão do Ensino Médio '
-          'e o semestre de ingresso dos discentes\nativos que nunca obtiveram um determinado conceito em alguma disciplina qualquer.\n')
+          'e o semestre de ingresso dos Discentes\nativos que nunca obtiveram um determinado conceito em alguma disciplina qualquer.\n')
 
     print('5 - Consultar o número de matrícula, o nome, o curso, o ano de conclusão do Ensino Médio e o semestre de ingresso dos '
-          'discentes que já\nforam inseridos em todas as turmas (e talvez em outras) que um determinado aluno já esteve inserido.\n')
+          'Discentes que já\nforam inseridos em todas as turmas (e talvez em outras) que um determinado aluno já esteve inserido.\n')
 
-    print('6 - Para cada discente, consultar o número de matrícula, o nome completo e todas as turmas (com o respectivo semestre)\n'
+    print('6 - Para cada Discente, consultar o número de matrícula, o nome completo e todas as turmas (com o respectivo semestre)\n'
           'em que já esteve lotado, junto com o nome da disciplina e o conceito obtido.\n')
 
-    print('7 - Para cada docente, consultar o seu código de vaga, o nome completo e a quantidade de alunos que já receberam'
+    print('7 - Para cada Docente, consultar o seu código da vaga, o nome completo e a quantidade de alunos que já receberam'
           'um determinado conceito na sua disciplina.\n')
 
-    print('8 - Para cada discente, consultar o número de matrícula, o nome completo, e a quantidade de créditos obrigatórios'
+    print('8 - Para cada Discente, consultar o número de matrícula, o nome completo, e a quantidade de créditos obrigatórios'
           ' já obtida no curso no qual está matriculado.\n')
 
-    print('9 - Para cada discente realizando uma atividade extra em alguma empresa, consultar o seu número de matrícula, o'
-          'nome completo, o curso no qual está atualmente matriculado,\n as datas de início e fim da atividade e, por fim o CNPJ e o nome '
+    print('9 - Para cada Discente realizando uma atividade extra em alguma empresa, consultar o seu número de matrícula, o'
+          'nome completo, o curso no qual está atualmente matriculado,\n as datas de início e fim da atividade e, por fim, o CNPJ e o nome '
           'da empresa em questão.\n')
 
     print('Z - Para todos os técnicos-administrativos que prestam algum serviço à uma Comissão de Graduação, consultar'
-          'o número da sua vaga, o seu nome completo\n, o nome da Comissão de Graduação correspondente, o seu cargo, a data de início'
+          'o código da sua vaga, o seu nome completo\n, o nome da Comissão de Graduação correspondente, o seu cargo, a data de início'
           'da prestação de serviços, e o valor da remuneração recebida unicamente pela prestação de serviços à sua Comissão.\n')
 
-    print('X - Para cada docente, deseja-se saber o seu código de vaga o seu nome completo, e, de acordo com '
+    print('X - Para cada Docente, consultar o seu código da vaga, o seu nome completo, e, de acordo com '
           'o que consta no sistema,\nos códigos de todas as turmas que já ministrou até o momento, junto com o respectivo semestre.\n')
 
-    print('C - Para cada docente, deseja-se saber o seu código de vaga, nome completo, a sua'
+    print('C - Para cada Docente, consultar o seu código da vaga, nome completo, a sua'
             'comissão de graduação e o seu departamento ao qual está vinculado, além da sua data de fim das atividades na Universidade.'
-          ' Todos os docentes devem ser retornados (mesmo os que não possuem vínculo com uma comissão ou com um departamento).\n')
+          ' Todos os Docentes devem ser retornados (mesmo os que não possuem vínculo com uma comissão ou com um departamento).\n')
 
-    print('V - Consultar a visão definida na base de dados, a qual mostra, para cada um dos discentes, o seu número de matrícula, \no seu nome completo, os cursos nos quais '
-          'já foi matriculado, o semestre de início e a data em que o discente deixou de estar vinculado ao curso.\n')
+    print('V - Consultar a visão definida na base de dados, a qual mostra, para cada um dos Discentes, o seu número de matrícula, \no seu nome completo, os cursos nos quais '
+          'já foi matriculado, o semestre de início e a data em que o Discente deixou de estar vinculado ao curso.\n')
 
-    print('G - Colocar em funcionamento o gatilho responsável por remover todas as conexões com comgrad e departamento de um dado professor quando o mesmo ' 
-    'tiver programado sua data de fim das atividades como docente.\n')
+    print('G - Colocar em funcionamento o gatilho responsável por remover todas as conexões com comgrad e departamento de um dado Docente quando o mesmo' 
+    'tiver programado sua data de fim das atividades como Docente.\n')
 
     print('D - Atribuir uma data de fim de realização de atividades para um Docente.\n')
 
     print('ESC - Encerrar execução do programa.\n')
 
-def realiza_consultas(cursor):
+def realiza_operacoes(cursor): # Permite ao usuário realizar as operações contidas no menu, na base de dados já criada.
 
-    lista_consultas = armazena_consultas()
+    lista_consultas = armazena_consultas() # Cria a lista contendo todas as consultas possíveis de serem realizadas.
 
     limpa_visao = ("""DROP VIEW IF EXISTS InfoDiscentes""")
-    cursor.execute(limpa_visao)
+    cursor.execute(limpa_visao) # Elimina uma visão já existente, caso possua o mesmo nome da nova visão.
 
     visao = ("""CREATE VIEW IF NOT EXISTS InfoDiscentes AS
-                  SELECT DISTINCT matricula_discente, nome AS nome_discente, nome_curso, semestre_inicio, data_fim
-                  FROM Membro_UFRGS JOIN Matricula ON (Membro_UFRGS.codigo_vaga = Matricula.matricula_discente) NATURAL JOIN Curso
+                  SELECT DISTINCT matricula_Discente, nome AS nome_Discente, nome_curso, semestre_inicio, data_fim
+                  FROM Membro_UFRGS JOIN Matricula ON (Membro_UFRGS.codigo_vaga = Matricula.matricula_Discente) NATURAL JOIN Curso
                   ORDER BY nome""")
-    cursor.execute(visao)
+    cursor.execute(visao) # Realiza a criação da nova visão útil, na base de dados.
 
-    limpa_gatilho = ("DROP TRIGGER IF EXISTS trig_data_fim;")
+    limpa_gatilho = ("DROP TRIGGER IF EXISTS trig_data_fim;") # Elimina um gatilho já existente, caso possua o mesmo nome do novo gatilho.
 
+    # Realiza a criação do novo gatilho útil, na base de dados.
     gatilho = ( """CREATE TRIGGER trig_data_fim
                 AFTER UPDATE ON Docente
                 FOR EACH ROW
@@ -494,13 +529,14 @@ def realiza_consultas(cursor):
                     WHERE(Docente.codigo_vaga = NEW.codigo_vaga);
                 END;""")
 
-    fim_docente =  ("""UPDATE Docente
+    # Operação de atualização, para atribuir uma data de fim de atividades para um determinado Docente.
+    fim_Docente =  ("""UPDATE Docente
                     SET data_fim = ?
                     WHERE codigo_vaga = ?""")
 
-    imprime_opcoes()
+    imprime_opcoes() # Mostra ao usuário todas as opções possíveis de serem realizadas no banco de dados.
 
-    while True:
+    while True: # Iteração para permitir que o usuário realize as operações na base de dados, até que o programa seja encerrado pressionando ESC.
         if keyboard.is_pressed('1'):
             cursor.execute(lista_consultas[0])
             print(cursor.fetchall())
@@ -590,9 +626,9 @@ def realiza_consultas(cursor):
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('d') or keyboard.is_pressed('D'):
-            codigo_vaga = str(input('Digite o codigo da vaga do docente a ser aposentado:\n'))
-            data_fim = str(input('Digite a data de aposentadoria do docente:\n'))
-            cursor.execute(fim_docente,(data_fim,codigo_vaga,))
+            codigo_vaga = str(input('Digite o codigo da vaga do Docente a ser aposentado:\n'))
+            data_fim = str(input('Digite a data de aposentadoria do Docente:\n'))
+            cursor.execute(fim_Docente,(data_fim,codigo_vaga,))
             input("Informação atualizada com sucesso. Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
@@ -600,23 +636,23 @@ def realiza_consultas(cursor):
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             break
 
-def inicia_programa():
+def inicia_programa():  # Inicia as operações DDL, DML e SQL na base de dados.
 
-    bancoUFRGS = sqlite3.connect('banco_UFRGS.db')
-    cursor = bancoUFRGS.cursor()
+    bancoUFRGS = sqlite3.connect('banco_UFRGS.db') # Realiza a conexão com o banco de dados.
+    cursor = bancoUFRGS.cursor() # Cria o cursor correspondente à base de dados.
 
     bancoUFRGS.execute("PRAGMA FOREIGN_KEYS = OFF")
-    cursor = prepara_banco(cursor)
+    cursor = prepara_banco(cursor) # Remove as tabelas já existentes no banco de dados, com nomes iguais aos das novas tabelas a serem inseridas.
 
     bancoUFRGS.execute("PRAGMA FOREIGN_KEYS = ON")
-    cursor = instancia_tabelas(cursor)
+    cursor = instancia_tabelas(cursor) # Realiza as criações de todas as tabelas da base de dados.
 
-    realiza_consultas(cursor)
+    realiza_operacoes(cursor) # Permite ao usuário realizar as operações contidas no menu, na base de dados já criada.
 
     bancoUFRGS.commit()
 
 def main():
-    inicia_programa()
+    inicia_programa() # Inicia as operações DDL, DML e SQL na base de dados.
     os.system("PAUSE")
 
 main()
