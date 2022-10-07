@@ -45,7 +45,7 @@ def insere_tuplas(cursor):
     cursor.execute("INSERT INTO Membro_UFRGS VALUES('78912478','Débora Leite Rocha','51135484055','9098061047','1995-05-02','Brasileiro','120801051504','debora.rochaleite@gmail.com','555134822952','R. Albion, 111 - Partenon, Porto Alegre - RS','Solteiro')")
     cursor.execute("INSERT INTO Membro_UFRGS VALUES('21245678','Gabriela Brendel Blum','90159714345','8596920389','1997-12-16','Brasileiro','057285009686','gabriela.blum@gmail.com','555134899255','Av. Guilherme Schell, 6750 - Centro, Canoas - RS','Casado')")
     cursor.execute("INSERT INTO Membro_UFRGS VALUES('87954327','Enrico Emerim Moretto','78725046415','4620145578','1996-08-18','Brasileiro','155874070043','enrico.moretto@gmail.com','555134211152','Av. Farroupilha, 4545 - Mal. Rondon, Canoas - RS','Viúvo')")
-    cursor.execute("INSERT INTO Membro_UFRGS VALUES('04939534','Sérgio Luis Cechin','02083098595','7839657358','1965-07-27','Brasileiro','869477653434','matheus.mews@gmail.com','5551977453968', 'Av. Boqueirão, 365 - Igara, Canoas - RS','Casado')")
+    cursor.execute("INSERT INTO Membro_UFRGS VALUES('04939534','Sérgio Luis Cechin','02083098595','7839657358','1965-07-27','Brasileiro','869477653434','sergio.cechin@gmail.com','5551977453968', 'Av. Boqueirão, 365 - Igara, Canoas - RS','Casado')")
     cursor.execute("INSERT INTO Membro_UFRGS VALUES('26683079','Diane Carvalho Martins','71671668750','6010457766','1970-01-30','Brasileiro','300982598492','diane.martins@gmail.com','5551908451322', 'R. Quinze de Janeiro, 11 - Centro, Canoas - RS','Solteiro')")
 
     cursor.execute("INSERT INTO Disciplina VALUES ('MAT01353','Cálculo e Geometria Analítica I - A',90,6)")
@@ -179,7 +179,7 @@ def instancia_tabelas(cursor):
                    "nome VARCHAR(100) NOT NULL, "
                    "cpf CHAR(11) NOT NULL UNIQUE, "
                    "rg CHAR(10) NOT NULL UNIQUE, "
-                   "data_nascimento DATE NOT NULL, "
+                   "data_nascimento CHAR(10) NOT NULL, "
                    "nacionalidade VARCHAR(50) NOT NULL, "
                    "titulo_eleitor CHAR(12) NOT NULL UNIQUE, "
                    "e_mail VARCHAR(100) NOT NULL UNIQUE, "
@@ -222,22 +222,22 @@ def instancia_tabelas(cursor):
                    "endereco VARCHAR(100) NOT NULL UNIQUE, "
                    "telefone_tecn CHAR(12) NOT NULL UNIQUE, "
                    "codigo_curso CHAR(8) NOT NULL UNIQUE, "
-                   "inicio_representacao DATE NOT NULL, "
+                   "inicio_representacao CHAR(10) NOT NULL, "
                    "codigo_discente VARCHAR(8) NOT NULL UNIQUE, "
                    "FOREIGN KEY (codigo_curso) REFERENCES Curso(codigo_curso),"
                    "FOREIGN KEY (codigo_discente) REFERENCES Discente(matricula))")
 
     cursor.execute("CREATE TABLE Docente (codigo_vaga CHAR(8) PRIMARY KEY NOT NULL,"
                    "titulacao VARCHAR(11) NOT NULL, "
-                   "data_inicio DATE NOT NULL, "
-                   "data_fim DATE, "
-                   "vacancia DATE, "
+                   "data_inicio CHAR(10) NOT NULL, "
+                   "data_fim CHAR(10), "
+                   "vacancia CHAR(10), "
                    "remuneracao NUMERIC(7,2) NOT NULL, "
                    "codigo_dpto CHAR(8), "
                    "cargo_dpto VARCHAR(60), "
                    "codigo_comgrad CHAR(8), "
                    "cargo_comgrad VARCHAR(60), "
-                   "data_inicio_comgrad DATE, "
+                   "data_inicio_comgrad CHAR(10), "
                    "remuneracao_comgrad NUMERIC(7,2), "
                    "FOREIGN KEY (codigo_vaga) REFERENCES Membro_UFRGS(codigo_vaga) ON DELETE CASCADE, "
                    "FOREIGN KEY (codigo_dpto) REFERENCES Departamento(codigo_dpto), "
@@ -249,13 +249,13 @@ def instancia_tabelas(cursor):
                    "FOREIGN KEY (matricula) REFERENCES Membro_UFRGS(codigo_vaga) ON DELETE CASCADE)")
 
     cursor.execute("CREATE TABLE Tecnico_adm (codigo_vaga CHAR(8) PRIMARY KEY NOT NULL, "
-                   "data_inicio DATE NOT NULL, "
-                   "data_fim DATE, "
-                   "vacancia DATE, "
+                   "data_inicio CHAR(10) NOT NULL, "
+                   "data_fim CHAR(10), "
+                   "vacancia CHAR(10), "
                    "remuneracao NUMERIC(7,2) NOT NULL, "
                    "codigo_comgrad CHAR(8) UNIQUE, "
                    "cargo_comgrad VARCHAR(60), "
-                   "data_inicio_comgrad DATE, "
+                   "data_inicio_comgrad CHAR(10), "
                    "remuneracao_comgrad NUMERIC(7,2), "
                    "FOREIGN KEY (codigo_vaga) REFERENCES Membro_UFRGS(codigo_vaga) ON DELETE CASCADE, "
                    "FOREIGN KEY (codigo_comgrad) REFERENCES Comgrad(codigo_comgrad) ON DELETE SET NULL)")
@@ -266,8 +266,8 @@ def instancia_tabelas(cursor):
                    "nome VARCHAR(100) NOT NULL, "
                    "creditos_complementares SMALLINT NOT NULL, "
                    "bolsa NUMERIC(7,2) NOT NULL, "
-                   "data_inicio DATE NOT NULL, "
-                   "data_fim DATE, "
+                   "data_inicio CHAR(10) NOT NULL, "
+                   "data_fim CHAR(10), "
                    "indicador_ativo BOOLEAN NOT NULL, "
                    "carga_horaria SMALLINT NOT NULL, "
                    "cnpj_empresa CHAR(18), "
@@ -278,7 +278,7 @@ def instancia_tabelas(cursor):
     cursor.execute("CREATE TABLE Matricula(matricula_discente CHAR(8) PRIMARY KEY NOT NULL, "
                    "codigo_curso CHAR(8) NOT NULL, "
                    "semestre_inicio CHAR(7) NOT NULL, "
-                   "data_fim DATE, "
+                   "data_fim CHAR(10), "
                    "modalidade_ingresso VARCHAR(30) NOT NULL, "
                    "vaga_ingresso VARCHAR(30) NOT NULL, "
                    "ordem SMALLINT, "
@@ -359,7 +359,7 @@ def armazena_consultas(): # Consultas parametrizadas: consultas 2,4, 5 e 7
                                                                                 (SELECT DISTINCT codigo_turma
                                                                                 FROM InfoDiscentes NATURAL JOIN Composicao_turma
                                                                                 WHERE matricula_discente = INFO.matricula_discente))
-                    ORDER BY nome_discente	""")
+                    ORDER BY nome_discente""")
 
     consulta6 = ("""SELECT matricula_discente, nome_discente, codigo_turma, semestre, Disciplina.nome AS nome_disciplina, conceito 
                     FROM InfoDiscentes NATURAL JOIN Composicao_turma JOIN Turma USING (codigo_turma,semestre) JOIN Disciplina USING (codigo_disciplina)
@@ -390,6 +390,10 @@ def armazena_consultas(): # Consultas parametrizadas: consultas 2,4, 5 e 7
                     FROM Membro_UFRGS JOIN Ministracao ON (codigo_vaga = codigo_docente)
                     ORDER BY nome_docente""")
 
+    consulta12 = ("""SELECT DISTINCT codigo_vaga, Membro_UFRGS.nome AS nome_docente, Comgrad.nome AS nome_Comgrad, Departamento.nome AS nome_departamento, data_fim
+                    FROM Membro_UFRGS NATURAL JOIN Docente LEFT JOIN Comgrad USING (codigo_comgrad) LEFT JOIN Departamento USING (codigo_dpto)
+                    ORDER BY nome_docente""")
+
     lista_consultas = []
     lista_consultas.append(consulta1)
     lista_consultas.append(consulta2)
@@ -402,6 +406,7 @@ def armazena_consultas(): # Consultas parametrizadas: consultas 2,4, 5 e 7
     lista_consultas.append(consulta9)
     lista_consultas.append(consulta10)
     lista_consultas.append(consulta11)
+    lista_consultas.append(consulta12)
     return lista_consultas
 
 def imprime_opcoes():
@@ -434,7 +439,7 @@ def imprime_opcoes():
           ' já obtida no curso no qual está matriculado.\n')
 
     print('9 - Para cada discente realizando uma atividade extra em alguma empresa, consultar o seu número de matrícula, o'
-          'nome completo, o curso no qual está atualmente matriculado\n, a datas de início e fim da atividade e, por fimm o CNPJ e o nome '
+          'nome completo, o curso no qual está atualmente matriculado,\n as datas de início e fim da atividade e, por fim o CNPJ e o nome '
           'da empresa em questão.\n')
 
     print('Z - Para todos os técnicos-administrativos que prestam algum serviço à uma Comissão de Graduação, consultar'
@@ -444,8 +449,17 @@ def imprime_opcoes():
     print('X - Para cada docente, deseja-se saber o seu código de vaga o seu nome completo, e, de acordo com '
           'o que consta no sistema,\nos códigos de todas as turmas que já ministrou até o momento, junto com o respectivo semestre.\n')
 
-    print('V - Consultar a visão definida na base de dados, a qual mostra, para cada um dos discentes, o seu número de matrícula, \no seu nome completo, os cursos nos quais'
-          'já foi matriculado, o semestre de início e a data em que o discente deixou de estar vinculado ao curso.')
+    print('C - Para cada docente, deseja-se saber o seu código de vaga, nome completo, a sua'
+            'comissão de graduação e o seu departamento ao qual está vinculado, além da sua data de fim das atividades na Universidade.'
+          ' Todos os docentes devem ser retornados (mesmo os que não possuem vínculo com uma comissão ou com um departamento).\n')
+
+    print('V - Consultar a visão definida na base de dados, a qual mostra, para cada um dos discentes, o seu número de matrícula, \no seu nome completo, os cursos nos quais '
+          'já foi matriculado, o semestre de início e a data em que o discente deixou de estar vinculado ao curso.\n')
+
+    print('G - Colocar em funcionamento o gatilho responsável por remover todas as conexões com comgrad e departamento de um dado professor quando o mesmo ' 
+    'tiver programado sua data de fim das atividades como docente.\n')
+
+    print('D - Atribuir uma data de fim de realização de atividades para um Docente.\n')
 
     print('ESC - Encerrar execução do programa.\n')
 
@@ -453,30 +467,30 @@ def realiza_consultas(cursor):
 
     lista_consultas = armazena_consultas()
 
+    limpa_visao = ("""DROP VIEW IF EXISTS InfoDiscentes""")
+    cursor.execute(limpa_visao)
+
     visao = ("""CREATE VIEW IF NOT EXISTS InfoDiscentes AS
                   SELECT DISTINCT matricula_discente, nome AS nome_discente, nome_curso, semestre_inicio, data_fim
                   FROM Membro_UFRGS JOIN Matricula ON (Membro_UFRGS.codigo_vaga = Matricula.matricula_discente) NATURAL JOIN Curso
                   ORDER BY nome""")
+    cursor.execute(visao)
 
-    gatilho = ("""CREATE FUNCTION tira_ministracao()
-                    RETURNS TRIGGER
-                    LANGUAGE plpgsql
-                    AS
-                    $$
-                    BEGIN
-                        DELETE FROM ministracao
-                        WHERE(ministracao.codigo_docente = NEW.codigo_vaga);
-                        RETURN NEW;
-                    END;
-                    $$;
-                    
-                    CREATE TRIGGER trig_vacancia
-                    AFTER UPDATE
-                    ON docente
-                    FOR EACH ROW
-                    WHEN(OLD.vacancia IS NULL and NEW.vacancia IS NOT NULL)
-                    EXECUTE PROCEDURE
-                    tira_ministracao();""")
+    limpa_gatilho = ("DROP TRIGGER IF EXISTS trig_data_fim;")
+
+    gatilho = ( """CREATE TRIGGER trig_data_fim
+                AFTER UPDATE ON Docente
+                FOR EACH ROW
+                WHEN(OLD.data_fim IS NULL and NEW.data_fim IS NOT NULL)
+                BEGIN
+                    UPDATE Docente
+                    SET codigo_dpto = NULL, cargo_dpto = NULL, codigo_comgrad = NULL, cargo_comgrad = NULL, data_inicio_comgrad = NULL, remuneracao_comgrad = NULL
+                    WHERE(Docente.codigo_vaga = NEW.codigo_vaga);
+                END;""")
+
+    fim_docente =  ("""UPDATE Docente
+                    SET data_fim = ?
+                    WHERE codigo_vaga = ?""")
 
     imprime_opcoes()
 
@@ -484,77 +498,96 @@ def realiza_consultas(cursor):
         if keyboard.is_pressed('1'):
             cursor.execute(lista_consultas[0])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('2'):
             remuneracao = int(input('Digite o valor da remuneracao a ser considerada:\n'))
             cursor.execute(lista_consultas[1], (remuneracao,))
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('3'):
             cursor.execute(lista_consultas[2])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('4'):
             conceito = str(input('Digite o conceito a ser considerado (A, B, C, D ou FF):\n'))
             cursor.execute(lista_consultas[3],(conceito,))
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('5'):
             nome_aluno = str(input('Digite o nome do aluno a ser considerado:\n'))
             cursor.execute(lista_consultas[4],(nome_aluno,))
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('6'):
             cursor.execute(lista_consultas[5])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('7'):
             conceito = str(input('Digite o conceito a ser considerado (A, B, C, D ou FF):\n'))
             cursor.execute(lista_consultas[6],(conceito,))
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('8'):
             cursor.execute(lista_consultas[7])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('9'):
             cursor.execute(lista_consultas[8])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('z') or keyboard.is_pressed('Z'):
             cursor.execute(lista_consultas[9])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('x') or keyboard.is_pressed('X'):
             cursor.execute(lista_consultas[10])
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
+            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
+            imprime_opcoes()
+        elif keyboard.is_pressed('c') or keyboard.is_pressed('C'):
+            cursor.execute(lista_consultas[11])
+            print(cursor.fetchall())
+            input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('v') or keyboard.is_pressed('V'):
             cursor.execute("""SELECT * FROM InfoDiscentes""")
             print(cursor.fetchall())
-            input("Pressione qualquer tecla para realizar uma nova consulta.")
+            input("Pressione qualquer tecla para realizar uma nova operação.")
+            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
+            imprime_opcoes()
+        elif keyboard.is_pressed('g') or keyboard.is_pressed('G'):
+            cursor.execute(limpa_gatilho)
+            cursor.execute(gatilho)
+            input("Gatilho em funcionamento. Pressione qualquer tecla para realizar uma nova operação.")
+            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
+            imprime_opcoes()
+        elif keyboard.is_pressed('d') or keyboard.is_pressed('D'):
+            codigo_vaga = str(input('Digite o codigo da vaga do docente a ser aposentado:\n'))
+            data_fim = str(input('Digite a data de aposentadoria do docente:\n'))
+            cursor.execute(fim_docente,(data_fim,codigo_vaga,))
+            input("Informação atualizada com sucesso. Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('Esc'):
