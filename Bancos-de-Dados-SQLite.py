@@ -541,99 +541,85 @@ def realiza_operacoes(cursor): # Permite ao usuário realizar as operações con
             cursor.execute(lista_consultas[0])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('2'):
             remuneracao = int(input('Digite o valor da remuneracao a ser considerada:\n'))
             cursor.execute(lista_consultas[1], (remuneracao,))
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('3'):
             cursor.execute(lista_consultas[2])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('4'):
             conceito = str(input('Digite o conceito a ser considerado (A, B, C, D ou FF):\n'))
             cursor.execute(lista_consultas[3],(conceito,))
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('5'):
             nome_aluno = str(input('Digite o nome do aluno a ser considerado:\n'))
             cursor.execute(lista_consultas[4],(nome_aluno,nome_aluno,))
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('6'):
             cursor.execute(lista_consultas[5])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('7'):
             conceito = str(input('Digite o conceito a ser considerado (A, B, C, D ou FF):\n'))
             cursor.execute(lista_consultas[6],(conceito,))
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('8'):
             cursor.execute(lista_consultas[7])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('9'):
             cursor.execute(lista_consultas[8])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('z') or keyboard.is_pressed('Z'):
             cursor.execute(lista_consultas[9])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('x') or keyboard.is_pressed('X'):
             cursor.execute(lista_consultas[10])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('c') or keyboard.is_pressed('C'):
             cursor.execute(lista_consultas[11])
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('v') or keyboard.is_pressed('V'):
             cursor.execute("""SELECT * FROM InfoDiscentes""")
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('g') or keyboard.is_pressed('G'):
             cursor.execute(limpa_gatilho)
             cursor.execute(gatilho)
             input("Gatilho em funcionamento. Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
+
             imprime_opcoes()
         elif keyboard.is_pressed('d') or keyboard.is_pressed('D'):
             codigo_vaga = str(input('Digite o codigo da vaga do Docente a ser aposentado:\n'))
             data_fim = str(input('Digite a data de aposentadoria do Docente:\n'))
             cursor.execute(fim_Docente,(data_fim,codigo_vaga,))
             input("Informação atualizada com sucesso. Pressione qualquer tecla para realizar uma nova operação.")
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
             imprime_opcoes()
         elif keyboard.is_pressed('Esc'):
-            os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
+
             break
 
 def inicia_programa():  # Inicia as operações DDL, DML e SQL na base de dados.
