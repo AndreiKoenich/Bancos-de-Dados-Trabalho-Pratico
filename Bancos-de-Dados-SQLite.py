@@ -118,7 +118,7 @@ def insere_tuplas(cursor): # Realiza todas as inserções de tuplas nas tabelas 
     cursor.execute("INSERT INTO Docente VALUES ('16184730','Associado','2005-07-21',NULL,NULL,15789.64,'41465428','Substituto',NULL,NULL,NULL,NULL)")
     cursor.execute("INSERT INTO Docente VALUES ('71447770','Adjunto','2007-02-10',NULL,'2022-08-07',10232.21,'92449402','Colaborador','18354247','Coordenador Substituto','2019-05-14',1200.00)")
     cursor.execute("INSERT INTO Docente VALUES ('51650993','Aposentado','1998-05-22','2022-08-07',NULL,0000.00,NULL,NULL,NULL,NULL,NULL,NULL)")
-    cursor.execute("INSERT INTO Docente VALUES ('04939534','Titular','2000-06-19','2025-01-12',NULL,14299.20,'38289622','Substituto', NULL, NULL, NULL, NULL)")
+    cursor.execute("INSERT INTO Docente VALUES ('04939534','Titular','2000-06-19',NULL,NULL,14299.20,'38289622','Substituto', NULL, NULL, NULL, NULL)")
     cursor.execute("INSERT INTO Docente VALUES ('26683079','Titular','2012-11-03',NULL,NULL,13870.34,'38289622','Colaborador','29454207','Coordenador','2018-10-10',2500.00)")
 
     cursor.execute("INSERT INTO Tecnico_adm VALUES ('14922846','2018-07-19',NULL,NULL,3500.00,'57585040','Técnico em Assuntos Educacionais','2020-05-04',1000.00)")
@@ -376,7 +376,7 @@ def armazena_consultas():
     # Discentes que já foram inseridos em todas as turmas (e talvez em outras) que um determinado aluno já esteve inserido.
     consulta5 = ("""SELECT matricula_Discente, nome_Discente, nome_curso, ano_conclusaoEM, semestre_inicio
                     FROM InfoDiscentes INFO JOIN Discente ON (matricula_Discente = matricula)
-                    WHERE nome_Discente <> 'Thiago Santos da Rosa' AND NOT EXISTS (SELECT matricula_Discente 
+                    WHERE nome_Discente <> ? AND NOT EXISTS (SELECT matricula_Discente 
                                                                             FROM InfoDiscentes NATURAL JOIN Composicao_turma
                                                                             WHERE nome_Discente = ? AND codigo_turma NOT IN
                                                                                 (SELECT DISTINCT codigo_turma
@@ -565,7 +565,7 @@ def realiza_operacoes(cursor): # Permite ao usuário realizar as operações con
             imprime_opcoes()
         elif keyboard.is_pressed('5'):
             nome_aluno = str(input('Digite o nome do aluno a ser considerado:\n'))
-            cursor.execute(lista_consultas[4],(nome_aluno,))
+            cursor.execute(lista_consultas[4],(nome_aluno,nome_aluno,))
             print(cursor.fetchall())
             input("Pressione qualquer tecla para realizar uma nova operação.")
             os.system('cls' if os.name == 'nt' else 'clear')  # Limpa o conteudo da tela.
