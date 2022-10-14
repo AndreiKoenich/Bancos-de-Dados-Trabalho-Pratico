@@ -4,7 +4,7 @@
 -- Andrei Pochmann Koenich
 -- Gustavo Spellmeier Neves
 
--- Etapa 3: Item 2) Manipulação da BASe de Dados: Consultas, Visões, Gatilhos e Procedimentos
+-- Etapa 3: Item 2) Manipulação da Base de Dados: Consultas, Visões, Gatilhos e Procedimentos
 
 -- Item 2 a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 2 tabelas.
 
