@@ -38,7 +38,7 @@ PRIMARY KEY (codigo_vaga),
 CHECK(estado_civil IN ('Solteiro','Casado','Separado','Divorciado','Viúvo')));
 
 INSERT INTO Membro_UFRGS VALUES
-('00308680','Andrei Pochmann Koenich','28372134905','8139867469','1999-03-12','Brasileiro','213547892312','andrei.koenich@gmail.com','555134735287','Rua Ernesto Weick,23 - Centro - Esteio','Solteiro'),
+('00308680','Andrei Pochmann Koenich','28372134905','8139867469','1999-03-12','Brasileiro','213547892312','andrei.koenich@gmail.com','555134735287','Rua Vigário José Inácio, 163 - Centro Histórico - Porto Alegre','Solteiro'),
  
 ('00301624','Gustavo Spellmeier Neves','53245878912','5234598721','2001-05-18','Brasileiro','123576891231','gustavo.neves@gmail.com','5551993934592','Rua 24 de Outubro,815 - Moinhos de Vento,Porto Alegre','Separado'), 
 
