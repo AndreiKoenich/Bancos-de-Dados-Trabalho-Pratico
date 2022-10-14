@@ -81,8 +81,8 @@ ORDER BY nome_discente
 SELECT matricula_discente, nome_discente, nome_curso, ano_conclusaoEM, semestre_inicio
 FROM InfoDiscentes INFO JOIN Discente ON (matricula_discente = matricula)
 WHERE nome_discente <> 'Thiago Santos da Rosa' AND NOT EXISTS (SELECT matricula_discente 
-														FROM InfoDiscentes NATURAL JOIN Composicao_turma
-														WHERE nome_discente = 'Thiago Santos da Rosa' AND codigo_turma NOT IN
+							       FROM InfoDiscentes NATURAL JOIN Composicao_turma
+							       WHERE nome_discente = 'Thiago Santos da Rosa' AND codigo_turma NOT IN
 															(SELECT DISTINCT codigo_turma
 															FROM InfoDiscentes NATURAL JOIN Composicao_turma
 															WHERE matricula_discente = INFO.matricula_discente))
